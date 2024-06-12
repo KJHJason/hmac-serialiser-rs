@@ -111,6 +111,7 @@ use serde::{Deserialize, Serialize};
 const DELIM: char = '.';
 
 /// An enum for defining the encoding scheme for the payload and the signature.
+#[derive(Debug, Clone)]
 pub enum Encoder {
     // Standard base64 encoding
     Standard,
@@ -168,6 +169,7 @@ pub trait Data {
 /// - `info` field is optional and can be used to provide application-specific information.
 ///
 /// The `salt` and the `info` fields can help to prevent key reuse and provide additional security.
+#[derive(Debug, Clone)]
 pub struct KeyInfo {
     // Main secret key
     pub key: Vec<u8>,
@@ -182,6 +184,7 @@ pub struct KeyInfo {
 /// A struct that holds the HMAC signer logic.
 ///
 /// The `HmacSigner` struct is used for signing and verifying data using HMAC signatures.
+#[derive(Debug, Clone)]
 pub struct HmacSigner {
     key: hmac::Key,
     encoder: general_purpose::GeneralPurpose,
