@@ -1,6 +1,15 @@
 [package]
 name = "hmac-serialiser-rs"
 version = "0.1.0"
+description = "HMAC Serialisers to cryptographically sign data like Python's ItsDangerous library but in rust."
+authors = [
+    "KJHJason <contact@kjhjason.com>",
+]
+keywords = ["hmac", "itsdangerous", "serialiser", "signing", "jwt"]
+categories = ["cryptography", "authentication"]
+repository = "https://github.com/KJHJason/hmac-serialiser-rs"
+license = "MIT"
+license.workspace = true
 edition = "2021"
 
 [dependencies]
