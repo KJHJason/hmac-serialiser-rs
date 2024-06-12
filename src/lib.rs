@@ -327,9 +327,9 @@ impl SignerLogic for HmacSigner {
     /// ```
     fn sign<T: Serialize + Data>(&self, data: &T) -> String {
         let token = serde_json::to_string(data).unwrap();
-        let token = general_purpose::URL_SAFE.encode(token.as_bytes());
+        let token = self.encoder.encode(token.as_bytes());
         let signature = self.sign_data(token.as_bytes());
-        let signature = general_purpose::URL_SAFE.encode(&signature);
+        let signature = self.encoder.encode(&signature);
         format!("{}{}{}", token, DELIM, signature)
     }
 }
