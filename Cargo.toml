@@ -9,7 +9,6 @@ keywords = ["hmac", "itsdangerous", "serialiser", "signing", "jwt"]
 categories = ["cryptography", "authentication"]
 repository = "https://github.com/KJHJason/hmac-serialiser-rs"
 license = "MIT"
-license.workspace = true
 edition = "2021"
 
 [dependencies]
