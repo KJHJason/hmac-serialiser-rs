@@ -8,7 +8,9 @@ This is mainly for developers who wants a shorter signed data compared to JSON W
 
 This HMAC Serialiser is inspired by Python's ItsDangerous library and produces an output structure of `<payload>.<signature>` unlike JWT where it produces `<header>.<payload>.<signature>`.
 
-Last but not least, the underlying HMAC and HKDF implementation is from the [ring](https://crates.io/crates/ring) crate.
+Last but not least, the underlying HMAC and HKDF implementation is from the [ring](https://crates.io/crates/ring) crate while the data serialisation and deserialisation is from the [serde](https://crates.io/crates/serde) crate.
+
+The signed data is then encoded or decoded using the [base64](https://crates.io/crates/base64) crate.
 
 ## Sample Usage
 
@@ -19,33 +21,34 @@ use serde::{Serialize, Deserialize};
 
 #[derive(Serialize, Deserialize, Debug)]
 struct TestData {
-    #[serde(with = "chrono::serde::ts_seconds_option")]
-    exp: Option<DateTime<Utc>>,
+    #[serde(with = "chrono::serde::ts_seconds")]
+    exp: DateTime<Utc>,
     data: String,
 }
 
 impl Data for TestData {
     fn get_exp(&self) -> Option<chrono::DateTime<Utc>> {
-        self.exp
+        Some(self.exp)
     }
 }
 
 fn main() {
     // KeyInfo will expand your key to the required length based on the algorithm. Hence, the unwrap().
     let signer = HmacSigner::new(
-        KeyInfo { b"secret-key".to_vec(), b"salt".to_vec(), b"app-context".to_vec() },
+        KeyInfo { 
+            b"secret-key".to_vec(), 
+            b"salt".to_vec(), 
+            b"app-context".to_vec(), // Note: You can use vec![] for optional parameters. 
+        },
         Algorithm::SHA256,
         Encoder::UrlSafe,
     );
     let data = TestData {
-        exp: Some(Utc::now() + Duration::hours(1)),
+        exp: Utc::now() + Duration::hours(1),
         data: "Hello World".to_string(),
     };
 
-    // Error handling is usually for serde 
-    // related errors when serialising the data.
-    // Hence, it is usually safe to use unwrap().
-    let signed_data = signer.sign(&data).unwrap();
+    let signed_data = signer.sign(&data);;
     println!("Signed Data: {}", signed_data);
 
     // Note: You could also do `let data: Type = ...`
