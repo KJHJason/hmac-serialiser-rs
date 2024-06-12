@@ -1,10 +1,14 @@
 # hmac-serialiser-rs
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 HMAC Serialisers to cryptographically sign data like Python's ItsDangerous library but in rust.
 
 This is mainly for developers who wants a shorter signed data compared to JSON Web Tokens (JWT) where the data might be too long for their use case.
 
 This HMAC Serialiser is inspired by Python's ItsDangerous library and produces an output structure of `<payload>.<signature>` unlike JWT where it produces `<header>.<payload>.<signature>`.
+
+Last but not least, the underlying HMAC and HKDF implementation is from the [ring](https://crates.io/crates/ring) crate.
 
 ## Sample Usage
 
