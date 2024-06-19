@@ -19,6 +19,7 @@ pub enum HkdfAlgorithm {
 }
 
 impl Algorithm {
+    #[inline]
     pub fn to_hmac(&self) -> hmac::Algorithm {
         match self {
             Algorithm::SHA1 => hmac::HMAC_SHA1_FOR_LEGACY_USE_ONLY,
@@ -27,6 +28,7 @@ impl Algorithm {
             Algorithm::SHA512 => hmac::HMAC_SHA512,
         }
     }
+    #[inline]
     pub fn from_hkdf(algo: &HkdfAlgorithm) -> Self {
         match algo {
             HkdfAlgorithm::SHA1 => Algorithm::SHA1,
@@ -38,6 +40,7 @@ impl Algorithm {
 }
 
 impl HkdfAlgorithm {
+    #[inline]
     pub fn to_hkdf(&self) -> hkdf::Algorithm {
         match self {
             HkdfAlgorithm::SHA1 => hkdf::HKDF_SHA1_FOR_LEGACY_USE_ONLY,
@@ -46,6 +49,7 @@ impl HkdfAlgorithm {
             HkdfAlgorithm::SHA512 => hkdf::HKDF_SHA512,
         }
     }
+    #[inline]
     pub fn from_hmac(algo: &Algorithm) -> Self {
         match algo {
             Algorithm::SHA1 => HkdfAlgorithm::SHA1,
@@ -61,6 +65,7 @@ pub trait HashAlgorithm {
 }
 
 impl HashAlgorithm for Algorithm {
+    #[inline]
     fn output_length(&self) -> usize {
         match self {
             Algorithm::SHA1 => 20,
@@ -72,6 +77,7 @@ impl HashAlgorithm for Algorithm {
 }
 
 impl HashAlgorithm for HkdfAlgorithm {
+    #[inline]
     fn output_length(&self) -> usize {
         match self {
             HkdfAlgorithm::SHA1 => 20,

@@ -2,13 +2,6 @@ use crate::algorithm::{Algorithm, HashAlgorithm, HkdfAlgorithm};
 use crate::errors::Error;
 use ring::hkdf::{Prk, Salt};
 
-#[macro_export]
-macro_rules! none {
-    () => {
-        b""
-    };
-}
-
 pub struct HkdfWrapper {
     salt: Salt,
     algo: HkdfAlgorithm,
@@ -22,10 +15,12 @@ impl HkdfWrapper {
         }
     }
 
+    #[inline]
     pub fn extract(&self, ikm: &[u8]) -> Prk {
         self.salt.extract(ikm)
     }
 
+    #[inline]
     pub fn get_okm_len(&self) -> usize {
         self.algo.output_length()
     }
@@ -49,6 +44,12 @@ mod tests {
     use super::*;
     use crate::algorithm::HkdfAlgorithm;
     use ring::rand::SecureRandom;
+
+    macro_rules! none {
+        () => {
+            b""
+        };
+    }
 
     fn bytes_to_hex(bytes: &[u8]) -> String {
         bytes.iter().map(|b| format!("{:02x}", b)).collect()

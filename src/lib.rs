@@ -124,6 +124,7 @@ pub enum Encoder {
 }
 
 impl Encoder {
+    #[inline]
     fn get_encoder(&self) -> general_purpose::GeneralPurpose {
         match self {
             Encoder::Standard => general_purpose::STANDARD,
@@ -207,9 +208,11 @@ impl HmacSigner {
             encoder: encoder.get_encoder(),
         }
     }
+    #[inline]
     fn sign_data(&self, data: &[u8]) -> Vec<u8> {
         hmac::sign(&self.key, data).as_ref().to_vec()
     }
+    #[inline]
     fn verify(&self, data: &[u8], signature: &[u8]) -> bool {
         hmac::verify(&self.key, data, signature).is_ok()
     }
@@ -267,7 +270,7 @@ impl SignerLogic for HmacSigner {
     fn unsign<T: for<'de> Deserialize<'de> + Data>(&self, token: &str) -> Result<T, Error> {
         let parts: Vec<&str> = token.split(DELIM).collect();
         if parts.len() != 2 {
-            return Err(Error::InvalidInput);
+            return Err(Error::InvalidInput(token.to_string()));
         }
 
         let encoded_data = parts[0];
@@ -384,14 +387,17 @@ mod tests {
     #[test]
     fn test_invalid_token() {
         let data = "tttttttttttttttttttttttttttttttttttttttttt";
+        let expected_error = Error::InvalidInput(data.to_string());
         let signer = setup(
             vec![1, 2, 3],
             vec![4, 5, 6],
             Algorithm::SHA256,
             Encoder::UrlSafe,
         );
-        let token: Result<TestClaim, Error> = signer.unsign(&data);
-        assert!(matches!(token, Err(Error::InvalidInput)));
+        match signer.unsign::<TestClaim>(&data) {
+            Ok(_) => panic!("Expected error"),
+            Err(e) => assert_eq!(e, expected_error),
+        };
     }
 
     #[test]

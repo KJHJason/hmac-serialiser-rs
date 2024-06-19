@@ -1,17 +1,17 @@
-use derive_more::{Display, Error};
+use thiserror::Error;
 
-#[derive(Debug, Display, Error)]
+#[derive(Debug, Error, PartialEq)]
 pub enum Error {
-    #[display(fmt = "invalid input")]
-    InvalidInput,
-    #[display(fmt = "invalid signature provided")]
+    #[error("invalid input: {0}")]
+    InvalidInput(String),
+    #[error("invalid signature provided")]
     InvalidSignature,
-    #[display(fmt = "invalid token provided")]
+    #[error("invalid token provided")]
     InvalidToken,
-    #[display(fmt = "could not expand key")]
+    #[error("could not expand key")]
     HkdfExpandError,
-    #[display(fmt = "could not fill key")]
+    #[error("could not fill key")]
     HkdfFillError,
-    #[display(fmt = "token has expired")]
+    #[error("token has expired")]
     TokenExpired,
 }
