@@ -1,3 +1,9 @@
+# ⚠️ Warning: No Longer Maintained ⚠️
+
+Superseded by https://github.com/KJHJason/hmac-serialiser
+
+The [new library](https://crates.io/crates/hmac-serialiser) uses implementations from RustCrypto which is fully implemented with Rust instead of relying on [ring](https://crates.io/crates/ring) crate that is implemented with a mix of Assembly, C, and Rust.
+
 # hmac-serialiser-rs
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
