@@ -1,6 +1,6 @@
 [package]
 name = "hmac-serialiser-rs"
-version = "0.1.3"
+version = "0.1.4"
 description = "HMAC Serialisers to cryptographically sign data like Python's ItsDangerous library but in rust."
 authors = [
     "KJHJason <contact@kjhjason.com>",
